@@ -82,3 +82,25 @@ Will result in the following order of operations
 1.  Log "microtask"
 1.  Return to the event loop and allow rendering/input callbacks to occur if appropriate
 1.  Log "task"
+
+## Risks
+
+### Infinite loops of microtasks
+
+A microtask posted with `queueMicrotask`
+may itself post another microtask
+so of course buggy websites can create infinite loops
+using this API.
+Since these are microtasks,
+the current task will never complete,
+the page will be unresponsive
+and the slow script dialog will be triggered.
+This is different to infinite chains of `setTimout` calls
+which *silently* consume 100% CPU
+but are easier to let slip into production
+since the tasks complete
+and event handling continues as normal.
+
+No new mitigations are proposed to handle this risk,
+the impact of the bug is immediately visible
+and the slow script dialog seems adequate.
