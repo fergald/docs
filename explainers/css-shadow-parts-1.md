@@ -32,8 +32,8 @@ I want all the `<fancy-button>`s to be blue.
 
 There have been several previous attempts at solving this,
 some more successful than others.
-More detail is available in [this post](https://meowni.ca/posts/styling-the-dome/)
-the short version is:
+More detail is available in [this post](https://meowni.ca/posts/styling-the-dome/).
+The short version is:
 
 - First came `:shadow` and `/deep/`
   (which have since been deprecated, and removed as of Chrome 60).
@@ -176,10 +176,10 @@ The `::part` forwarding syntax has options a-plenty.
   ```
 
 #### Forwarding with -*
-*Note: `-*` forwarding is currently in the spec.*
-The following is how it could work.
+*Note: `-*` forwarding is currently not in the spec.
+The following is how it could work.*
 
-- `part="* => foo-*"`: implicitly forward all of `x-foo`’s parts as they are, but prefixed.
+- `part="* foo-*"`: implicitly forward all of `x-foo`’s parts as they are, but prefixed.
   These selectors *would* match:
 
   ```css
@@ -205,14 +205,14 @@ The following is how it could work.
   ```html
   <x-bar>
     #shadow-root
-    <x-foo partmap="* => foo-*"></x-foo>
-    /* or */
-    <x-foo partmap="some-input => foo-input"></x-foo>
+    <x-foo partmap="* foo-*"></x-foo>
+    <!-- or -->
+    <x-foo partmap="some-input foo-input"></x-foo>
   </x-bar>
   ```
 
 - You cannot forward all parts at once,
-  i.e. `partmap="* => *"`
+  i.e. `partmap="* *"`
   since this might break your element in the future
   (if the nested shadow element adds new parts).
   So this is invalid:
@@ -220,9 +220,9 @@ The following is how it could work.
   ```html
   <x-form>
     #shadow-root
-    <x-bar partmap="* => *">
+    <x-bar partmap="* *">
       #shadow-root
-      <x-foo part="* => *"></x-foo>
+      <x-foo partmap="* *"></x-foo>
     </x-bar>
   </x-form>
   ```
@@ -233,9 +233,9 @@ The following is how it could work.
   ```html                                    
   <x-form>
     #shadow-root
-    <x-bar part="* => bar-*">
+    <x-bar part="* bar-*">
       #shadow-root
-      <x-foo part="* => foo-*"></x-foo>
+      <x-foo part="* foo-*"></x-foo>
     </x-bar>
   </x-form>
   ```
@@ -262,7 +262,7 @@ So given this shadow tree:
     #shadow-root
     <x-bar partmap="some-input, some-box">
       #shadow-root
-      <x-foo part="some-input, some-box></x-foo>
+      <x-foo part="some-input, some-box"></x-foo>
     </x-bar>
   </x-form>
 </submit-form>
@@ -331,7 +331,7 @@ you could style all the inputs with `theme="some-input"` in the app with:
 ## Demo
 
 Chrome 69 shipped with `::part` working behind a flag.
-Starting chrome with
+Starting Chrome with
 
 ```sh
 google-chrome --enable-blink-features=CSSPartPseudoElement
