@@ -87,7 +87,7 @@ You can specify a "styleable" part on any element in your shadow tree:
   #shadow-root
   <div part="some-box"><span>...</span></div>
   <input part="some-input">
-  <div>...</div> /* not styleable
+  <div>...</div> <!-- not styleable -->
 </x-foo>
 ```
 
