@@ -142,13 +142,13 @@ it would have to be exposed:
 ```html
 <x-bar>
   #shadow-root
-  <x-foo partmap="some-box foo-some-box"></x-foo>
+  <x-foo exposedparts="some-box foo-some-box"></x-foo>
 </x-bar>
 ```
 
 The `::part` forwarding syntax has options a-plenty.
 
-- `partmap="some-box, some-input"`:
+- `exposedparts="some-box, some-input"`:
   explicitly forward `x-foo`’s parts that you know about
   (i.e. some-box and some-input) as they are.
   These selectors *would* match:
@@ -158,7 +158,7 @@ The `::part` forwarding syntax has options a-plenty.
   x-bar::part(some-input) { ... }
   ```
 
-- `partmap="some-input foo-input"`:
+- `exposedparts="some-input foo-input"`:
   explicitly forward (some) of `x-foo`’s parts (i.e. some-input)
   but rename them.
   These selectors *would* match:
@@ -205,14 +205,14 @@ The following is how it could work.*
   ```html
   <x-bar>
     #shadow-root
-    <x-foo partmap="* foo-*"></x-foo>
+    <x-foo exposedparts="* foo-*"></x-foo>
     <!-- or -->
-    <x-foo partmap="some-input foo-input"></x-foo>
+    <x-foo exposedparts="some-input foo-input"></x-foo>
   </x-bar>
   ```
 
 - You cannot forward all parts at once,
-  i.e. `partmap="* *"`
+  i.e. `exposedparts="* *"`
   since this might break your element in the future
   (if the nested shadow element adds new parts).
   So this is invalid:
@@ -220,9 +220,9 @@ The following is how it could work.*
   ```html
   <x-form>
     #shadow-root
-    <x-bar partmap="* *">
+    <x-bar exposedparts="* *">
       #shadow-root
-      <x-foo partmap="* *"></x-foo>
+      <x-foo exposedparts="* *"></x-foo>
     </x-bar>
   </x-form>
   ```
@@ -258,9 +258,9 @@ So given this shadow tree:
 ```html
 <submit-form>
   #shadow-root
-  <x-form partmap="some-input, some-box">
+  <x-form exposedparts="some-input, some-box">
     #shadow-root
-    <x-bar partmap="some-input, some-box">
+    <x-bar exposedparts="some-input, some-box">
       #shadow-root
       <x-foo part="some-input, some-box"></x-foo>
     </x-bar>
