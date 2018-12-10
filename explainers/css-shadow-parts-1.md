@@ -158,7 +158,7 @@ The `::part` forwarding syntax has options a-plenty.
   x-bar::part(some-input) { ... }
   ```
 
-- `exportparts="some-input foo-input"`:
+- `exportparts="some-input: foo-input"`:
   explicitly forward (some) of `x-foo`’s parts (i.e. some-input)
   but rename them.
   These selectors *would* match:
