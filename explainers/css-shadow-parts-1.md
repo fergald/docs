@@ -339,3 +339,27 @@ google-chrome --enable-blink-features=CSSPartPseudoElement
 
 will allow you to try this out.
 It does not support the `-*` syntax to forward multiple parts.
+
+## Other future work
+
+Feedback from developers has identified several areas for future work.
+
+### Access control
+
+[Issue](https://github.com/w3c/csswg-drafts/issues/3506)
+
+Component authors may want to restrict what style-properties of a part can be
+set by users of the component, e.g. allowing changes to color but not height.
+
+### Controlling theme
+
+[Issue](https://github.com/w3c/csswg-drafts/issues/3507)
+
+The `::theme` selector, as described above,
+allows deep components to expose themselves for theming
+with no control allowed by the containing components.
+In real usage it's likely that component authors
+will want more control than this.
+
+This could be some kind of white-/black-listing of themes by components or
+defining themes by patterns against part names.
