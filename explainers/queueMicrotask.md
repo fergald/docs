@@ -9,7 +9,7 @@ to queue a microtask
 
 
 
-*   `Promise.result().then(callback)`
+*   `Promise.resolve().then(callback)`
 *   Register a mutation observer and trigger it with a mutation
 
 The library [asap](https://github.com/kriskowal/asap) uses these tricks
