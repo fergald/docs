@@ -287,7 +287,7 @@ then you’d have to write:
 
 ```css
 :root::part(form-bar-foo-some-input),
-:root::part(bar-foo-some-input,
+:root::part(bar-foo-some-input),
 :root::part(foo-some-input),
 :root::part(some-input) { ... }
 ```
