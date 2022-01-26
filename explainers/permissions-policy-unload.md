@@ -13,7 +13,7 @@ to allow a page to opt out of firing unload handlers.
 ## Motivation
 
 Unload handlers have been [unreliable](https://developers.google.com/web/updates/2018/07/page-lifecycle-api#the-unload-event) for a long time.
-Inload handlers are not guaranteed to be fired
+Unload handlers are not guaranteed to be fired
 on all cases where a document gets destroyed,
 especially on mobile platforms
 where tabs are more likely to get killed in the background.
