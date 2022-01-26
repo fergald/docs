@@ -52,7 +52,8 @@ a way stop firing unload handlers
 even if they are added by code
 outside of their control.
 
-A site uses this new Permissions-Policy entry, the page will be:
+If a page uses this new Permissions-Policy,
+the page will be:
 
 *   More likely to be eligible with BFCache
 *   Protected from accidentally introducing unload handlers
@@ -126,7 +127,7 @@ Document-Policy: unload=?0
 
 Different from Permissions-Policy,
 Document-Policy can not be used to force disabling its child frames' unload handlers recursively.
-In Chrome, even If the main frame doesn’t use unload handlers at all,
+In Chrome, even if the main frame doesn’t use unload handlers at all,
 the iframe’s unload handlers can block Chrome’s BFCache.
 
 ## Considered alternatives - Disabling from JS
@@ -139,7 +140,7 @@ if it runs before any other script that adds unload handlers
 (which is hard to guarantee),
 it also can't disable unload handlers on child frames, etc.
 
-https://chikamune-cr.github.io/how\_to\_disable\_unload\_handlers\_by\_monkeypatch/
+https://chikamune-cr.github.io/how_to_disable_unload_handlers_by_monkeypatch/
 
 ```js
 // Ignore the window.onunload attribute.
