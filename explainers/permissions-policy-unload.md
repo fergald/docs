@@ -110,7 +110,8 @@ Permissions-Policy: unload=()
 When site authors want to know if unload handlers are present in their main frame,
 the following header will cause that to be reported.
 See [this doc](https://github.com/w3c/webappsec-permissions-policy/blob/main/reporting.md#can-i-just-trigger-reports-without-actually-enforcing-the-policy) for more details on reporting.
-Unfortunately there is not reporting on sub-frames as this has privacy implications.
+Unfortunately, reporting for sub-frames has privacy implications,
+so it won't be permitted.
 
 ```
 Permissions-Policy-Report-Only: unload=()
@@ -171,16 +172,17 @@ This was rejected as it might cause unexpected behavior
 when frames communicate with each other.
 (We're open to suggestions)
 
-
 ## Frequently Asked Questions
 
+### Will this Permissions-policy also affect the unload handlers added by extensions?
 
-### If a page uses a Permissions-Policy to disable unload, will unload handlers that are added by extensions stop firing?
-
-In Chrome's implementation, yes.
-We believe that there are alternatives to unload
-that can be used by extensions
-and so there is no need to make an exception.
-We will make an effort to make extension authors aware of this new feature
-so that they can proactively migrate away from unload
-before sites start using this.
+Yes.
+It doesn't seem possible to special case unload handlers from extensions.
+Fortunately, we believe that there are alternatives to unload
+that can be used by extensions.
+We've proactively reached out to popular extensions known to use unload handlers
+to verify that these alternatives are viable.
+We will work on increasing awareness and providing guidance
+for a smooth migration.
+We welcome feedback and questions
+from extensions authors on this topic.
