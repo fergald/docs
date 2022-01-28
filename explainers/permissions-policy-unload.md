@@ -9,7 +9,6 @@ to opt out of features.
 This proposal would add a way
 to allow a page to opt out of firing unload handlers.
 
-
 ## Motivation
 
 Unload handlers have been [unreliable](https://developers.google.com/web/updates/2018/07/page-lifecycle-api#the-unload-event) for a long time.
@@ -60,12 +59,10 @@ the page will be:
 *   More predictable as the unload handler will never run,
     instead of maybe running on Desktop but not on Chrome Android/Safari/etc)
 
-
 ## Goals
 
 *   Provide a way to ensure that a page is free from unload handlers.
 *   Provide a way to force-disable embedded iframe’s unload handlers from the iframe embedder side.
-
 
 ## Non-goals
 
@@ -79,7 +76,6 @@ the page will be:
     Use of unload events is allowed in documents in top-level browsing contexts by default,
     and when allowed,
     use of unload events is allowed by default to documents in child browsing contexts.
-
 
 ## Examples
 
