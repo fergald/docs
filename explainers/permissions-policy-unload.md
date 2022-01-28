@@ -174,15 +174,33 @@ when frames communicate with each other.
 
 ## Frequently Asked Questions
 
-### Will this Permissions-policy also affect the unload handlers added by extensions?
+### Will this Permissions-policy cause problems for 3rd-party iframes that use unload handlers?
+Possibly.
+Authors should ensure that
+all iframes on a page have correctly without unload handlers
+before using this header.
+Disabling unload handlers may impact e.g. reporting of metrics.
+Such issues will tend not be visible in the page itself,
+since unload handlers run after document discard.
+We’ve started reaching out to common 3rd party iframe providers,
+asking them to remove unload handlers.
+We will also encourage them to include this header on their iframes
+to ensure that they stay unload-free,
+once it is available.
 
-Yes.
-It doesn't seem possible to special case unload handlers from extensions.
-Fortunately, we believe that there are alternatives to unload
-that can be used by extensions.
-We've proactively reached out to popular extensions known to use unload handlers
-to verify that these alternatives are viable.
-We will work on increasing awareness and providing guidance
-for a smooth migration.
-We welcome feedback and questions
-from extensions authors on this topic.
+### What should sites do if they have 3rd-party iframes that rely on unload handlers?
+Sites can provide feedback to 3rd-party iframe providers,
+asking them to remove unload handlers if possible.
+In parallel, sites can use this header,
+yet allowing origins with remaining unload handlers.
+Doing this will not make the page BFCacheable
+but it will help ensure that new unload handlers do not creep in elsewhere.
+
+### Will this Permissions-policy also affect the unload handlers added by extensions?
+In Chrome's implementation, yes.
+We believe that there are alternatives to unload
+that can be used by extensions
+and so there is no need to make an exception.
+We will make an effort to make extension authors aware of this new feature
+so that they can proactively migrate away from unload
+before sites start using this.
