@@ -39,6 +39,10 @@ For best performance,
 sites should avoid using unload handlers.
 Alternatives exist for most uses,
 see https://web.dev/bfcache/#never-use-the-unload-event for recommendations.
+We are, in parallel, proposing the [unload beacon API](https://github.com/darrenw/docs/blob/main/explainers/beacon_api.md)
+to cover another common use case.
+If there are use cases that still require unload handlers
+please let us know.
 
 For sites that have removed all of their unload handlers,
 we would like them to have way to ensure
