@@ -4,10 +4,10 @@
 
 This is a proposal for a new [Permissions-Policy](https://github.com/w3c/webappsec-permissions-policy/blob/main/permissions-policy-explainer.md) entry
 that will disable unload handlers.
-Permissions-Policy is a mechanism for individual pages
-to opt out of features.
-This proposal would add a way
-to allow a page to opt out of firing unload handlers.
+Permissions-Policy is a mechanism for controlling individual page's
+access to features.
+This proposal would add a way for a page to opt out of firing unload handlers
+while allowing exceptions.
 
 ## Motivation
 
@@ -75,7 +75,7 @@ the page will be:
 ## Proposed Solution
 
 *   Add `unload` as a [policy-controlled feature](https://www.w3.org/TR/permissions-policy-1/#features).
-*   Make [default allowlist](https://www.w3.org/TR/permissions-policy-1/#default-allowlists) `*` for the unload feature
+*   Use [default allowlist](https://www.w3.org/TR/permissions-policy-1/#default-allowlists) `*` for the unload feature
     so that the existing sites behave the same as before.
     Use of unload events is allowed in documents in top-level browsing contexts by default,
     and when allowed,
@@ -83,18 +83,7 @@ the page will be:
 
 ## Examples
 
-### Example 1 - Disable unload events under specific iframe
-
-The following sample shows how to stop firing unload handlers under a specific iframe.
-The unload handlers in the nested iframes inside this iframe also stop firing.
-There is no way to re-enable unload events from the child iframes
-once the parent iframe decides to ignore unload handlers.
-
-```
-<iframe src="https://iframe.com/" allow="unload 'none'"></iframe>
-```
-
-### Example 2 - Disable unload events entirely
+### Example 1 - Disable unload events entirely
 
 When site authors want to disable unload events for the current frame
 and all of its child iframes recursively,
@@ -103,6 +92,18 @@ when serving the document.
 
 ```
 Permissions-Policy: unload=()
+```
+
+### Example 2 - Disable unload events with an exception for one origin
+
+When site authors have cleared unload events from most of a page
+and want to ensure that none creep back in
+but still have a subframe that depends on unload,
+site authors can use the following HTTP response header
+when serving the document.
+
+```
+Permissions-Policy: unload=(https://still-uses-unload.com)
 ```
 
 ### Example 3 - Report without disabling
