@@ -26,8 +26,9 @@ For a page with unload event handlers,
 we must choose whether to allow BFCacheing
 or whether to make the unload event reliable.
 
-In some browsers like Desktop Chrome and Desktop Firefox,
-the existence of unload handlers makes a page ineligible for BFCache,
+Some browsers, like Desktop Chrome and Desktop Firefox,
+have chosen to keep the unload event reliable,
+so the existence of unload handlers makes a page ineligible for BFCache,
 hurting performance.
 In others like Android Chrome & Android [Firefox](https://groups.google.com/a/mozilla.org/g/dev-platform/c/3pQRLPZnQgQ/m/dsA1w4iiAwAJ),
 and WebKit-based browsers (Desktop Safari & all iOS browsers),
@@ -52,8 +53,7 @@ sometimes getting rid of unload handlers from the page is not easy
 e.g. in the case when a third party code library uses unload handlers silently.
 This proposal gives the site
 a way stop firing unload handlers
-even if they are added by code
-outside of their control.
+even if they are added by code outside of their control.
 
 If a page uses this new Permissions-Policy,
 the page will be:
