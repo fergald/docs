@@ -128,9 +128,14 @@ Document-Policy: unload=?0
 ```
 
 Different from Permissions-Policy,
-Document-Policy can not be used to force disabling its child frames' unload handlers recursively.
-In Chrome, even if the main frame doesn’t use unload handlers at all,
-the iframe’s unload handlers can block Chrome’s BFCache.
+Document-Policy cannot be used to force disabling its child frames' unload handlers recursively.
+The spec includes the `Sec-Required-Document-Policy` [header](https://wicg.github.io/document-policy/#sec-required-document-policy-http-header),
+however this is not full specified ([serialization](https://wicg.github.io/document-policy/#serialization))
+and remains unimplemented in browsers.
+If implemented, it would force sites to choose between broken iframes and BFCache.
+This would be useful on dev and staging deployments
+to detect subframes that do not comply with the policy
+but deploying it in production would be risky.
 
 ## Considered alternatives - Disabling from JS
 
