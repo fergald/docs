@@ -231,6 +231,8 @@ or (hypothetically) intentionally exploits the iframe.
 
 We believe that the danger posed by embedders maliciously disabling unload handlers in iframes is minimal
 and not in the same class as an ability to disable other APIs.
+Meanwhile conscientious sites are unable to safeguard their work
+to improve performance for users with BFCache.
 
 ## Frequently Asked Questions
 
