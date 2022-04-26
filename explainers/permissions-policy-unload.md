@@ -84,9 +84,11 @@ the page will be:
 
 ## Availability
 
-We propose that this API only be made available
-when we believe that migration paths are available for all uses of unload
-and sufficient time has passed for that migration.
+Right now, we do not know of any use case that *requires* unload.
+There are some use cases (e.g. whole page metrics gathering)
+that may be more easily implemented with unload.
+The [unload beacon API](https://github.com/darrenw/docs/blob/main/explainers/beacon_api.md) addresses these use cases.
+As a result we believe that there is no blocker to releasing this API.
 
 ## Examples
 
