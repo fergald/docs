@@ -41,7 +41,7 @@ sites should avoid using unload handlers.
 Alternatives exist for most uses,
 see https://web.dev/bfcache/#never-use-the-unload-event for recommendations.
 We are, in parallel, proposing the [unload beacon API](https://github.com/darrenw/docs/blob/main/explainers/beacon_api.md)
-to cover another common use case.
+which makes migrating away from unload easier for some common use cases.
 If there are use cases that still require unload handlers
 please let us know.
 
@@ -81,14 +81,6 @@ the page will be:
     Use of unload events is allowed in documents in top-level browsing contexts by default,
     and when allowed,
     use of unload events is allowed by default to documents in child browsing contexts.
-
-## Availability
-
-Right now, we do not know of any use case that *requires* unload.
-There are some use cases (e.g. whole page metrics gathering)
-that may be more easily implemented with unload.
-The [unload beacon API](https://github.com/darrenw/docs/blob/main/explainers/beacon_api.md) addresses these use cases.
-As a result we believe that there is no blocker to releasing this API.
 
 ## Examples
 
