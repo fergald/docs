@@ -198,8 +198,10 @@ Right now unload handlers for an iframe will not be run in the following cases
 - implementations typically allot a time budget for running unload handlers
   which may cause some not to complete or not to run at all
 
-This means that if preventing unload handlers from running is a problem
-then it's a problem that already exists.
+This means that unload handlers are already not a guaranteed capability
+that subframes can depend on,
+and placing some control over this nondeterminism with the parent frame
+does not create a new problem.
 
 ### Unload handlers are invisible to users
 
