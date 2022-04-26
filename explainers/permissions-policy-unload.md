@@ -222,7 +222,7 @@ However using unload for this is already a bad idea
 due to its unreliability.
 
 Since this policy requires opt-in by the embedder,
-problemative cases can be excepted until they are fixed.
+problematic cases can be excepted until they are fixed.
 What remains are the cases where the embedder
 accidentally breaks something an iframe
 or (hypothetically) intentionally exploits the iframe.
