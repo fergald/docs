@@ -227,6 +227,17 @@ What remains are the cases where the embedder
 accidentally breaks something an iframe
 or (hypothetically) intentionally exploits the iframe.
 
+### In line with sync-xhr and document-domain
+
+Both `sync-xhr` and `document-domain` permissions
+cause a long-standing feature to throw an exception.
+Existing code written to use these features
+was unlikely to recover well from this exception
+so it was effectively a cross-origin ability to control execution
+of certain pieces of script.
+This was not a problem in practice.
+
+
 ### Conclusion
 
 We believe that the danger posed by embedders maliciously disabling unload handlers in iframes is minimal
