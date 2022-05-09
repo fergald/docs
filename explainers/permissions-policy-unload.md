@@ -41,11 +41,11 @@ sites should avoid using unload handlers.
 Alternatives exist for most uses,
 see https://web.dev/bfcache/#never-use-the-unload-event for recommendations.
 We are, in parallel, proposing the [unload beacon API](https://github.com/darrenw/docs/blob/main/explainers/beacon_api.md)
-to cover another common use case.
+which makes migrating away from unload easier for some common use cases.
 If there are use cases that still require unload handlers
 please let us know.
 
-For sites that have removed all of their unload handlers,
+For sites that have removed some or all of their unload handlers,
 we would like them to have way to ensure
 that no new handlers are introduced in the future.
 In addition to that,
@@ -61,11 +61,12 @@ the page will be:
 *   More likely to be eligible with BFCache
 *   Protected from accidentally introducing unload handlers
 *   More predictable as the unload handler will never run,
-    instead of maybe running on Desktop but not on Chrome Android/Safari/etc)
+    instead of maybe running on Desktop but not on Chrome Android/Safari/etc.
 
 ## Goals
 
 *   Provide a way to ensure that a page is free from unload handlers.
+*   Provide a way to lock in progress on gradually removing all unload handlers from a site.
 *   Provide a way to force-disable embedded iframe’s unload handlers from the iframe embedder side.
 
 ## Non-goals
@@ -177,6 +178,72 @@ when the parent frame is salvaged from BFCache.
 This was rejected as it might cause unexpected behavior
 when frames communicate with each other.
 (We're open to suggestions)
+
+## Concerns about giving embedders control over the (non)execution of iframe code
+
+If the embedder of an iframe can control whether the iframe's unload handler runs or not
+then that seems to provide a cross-origin control point
+that could potentially be used to exploit the iframe.
+
+While cross-origin control of scripting is, in general, a bad thing,
+unload handlers are very different to other APIs.
+
+### Unload handlers already often don't run
+
+Right now unload handlers for an iframe will not be run in the following cases
+
+- mobile browser backgrounded tab killed by OS
+- most mobile browsers and some desktop browsers if they believe the page could be BFCached
+- any multi-process browser where a crash occurs in the process responsible for the iframe
+- implementations typically allot a time budget for running unload handlers
+  which may cause some not to complete or not to run at all
+
+This means that unload handlers are already not a guaranteed capability
+that subframes can depend on,
+and placing some control over this nondeterminism with the parent frame
+does not create a new problem.
+
+### Unload handlers are invisible to users
+
+Unload handlers run *after* navigation has occurred.
+The exact timing depends on many factors.
+In some cases unload handlers will block the navigation until they complete,
+in other cases they run in the background
+in parallel with the new page loading.
+In either case,
+whether the unload handler runs or not
+has no bearing on the immediate user experience
+apart from possibly slowing down the appearance of the next page.
+
+It is possible that skipping the unload handler will change the user experience later on,
+e.g. if unload is responsible for persisting some data
+in storage or over the network.
+However using unload for this is already a bad idea
+due to its unreliability.
+
+Since this policy requires opt-in by the embedder,
+problematic cases can be excepted until they are fixed.
+What remains are the cases where the embedder
+accidentally breaks something an iframe
+or (hypothetically) intentionally exploits the iframe.
+
+### In line with sync-xhr and document-domain
+
+Both `sync-xhr` and `document-domain` permissions
+cause a long-standing feature to throw an exception.
+Existing code written to use these features
+was unlikely to recover well from this exception
+so it was effectively a cross-origin ability to control execution
+of certain pieces of script.
+This was not a problem in practice.
+
+
+### Conclusion
+
+We believe that the danger posed by embedders maliciously disabling unload handlers in iframes is minimal
+and not in the same class as an ability to disable other APIs.
+Meanwhile conscientious sites are unable to safeguard their work
+to improve performance for users with BFCache.
 
 ## Frequently Asked Questions
 
