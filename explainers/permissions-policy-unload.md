@@ -179,7 +179,13 @@ This was rejected as it might cause unexpected behavior
 when frames communicate with each other.
 (We're open to suggestions)
 
-## Concerns about giving embedders control over the (non)execution of iframe code
+## Privacy Considerations
+
+None.
+
+## Security Considerations
+
+### Concerns about giving embedders control over the (non)execution of iframe code
 
 If the embedder of an iframe can control whether the iframe's unload handler runs or not
 then that seems to provide a cross-origin control point
@@ -188,7 +194,7 @@ that could potentially be used to exploit the iframe.
 While cross-origin control of scripting is, in general, a bad thing,
 unload handlers are very different to other APIs.
 
-### Unload handlers already often don't run
+#### Unload handlers already often don't run
 
 Right now unload handlers for an iframe will not be run in the following cases
 
@@ -203,7 +209,7 @@ that subframes can depend on,
 and placing some control over this nondeterminism with the parent frame
 does not create a new problem.
 
-### Unload handlers are invisible to users
+#### Unload handlers are invisible to users
 
 Unload handlers run *after* navigation has occurred.
 The exact timing depends on many factors.
@@ -227,7 +233,7 @@ What remains are the cases where the embedder
 accidentally breaks something an iframe
 or (hypothetically) intentionally exploits the iframe.
 
-### In line with sync-xhr and document-domain
+#### In line with sync-xhr and document-domain
 
 Both `sync-xhr` and `document-domain` permissions
 cause a long-standing feature to throw an exception.
@@ -238,7 +244,7 @@ of certain pieces of script.
 This was not a problem in practice.
 
 
-### Conclusion
+#### Conclusion
 
 We believe that the danger posed by embedders maliciously disabling unload handlers in iframes is minimal
 and not in the same class as an ability to disable other APIs.
@@ -277,3 +283,95 @@ and so there is no need to make an exception.
 We will make an effort to make extension authors aware of this new feature
 so that they can proactively migrate away from unload
 before sites start using this.
+
+# [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
+
+01.  What information might this feature expose to Web sites or other parties,
+     and for what purposes is that exposure necessary?
+
+     > None.
+
+02.  Do features in your specification expose the minimum amount of information
+     necessary to enable their intended uses?
+
+     > Yes. No information is directly exposed.
+     > Some information about whether a subframe has an unload event handler
+     > might be deducible.
+
+03.  How do the features in your specification deal with personal information,
+     personally-identifiable information (PII), or information derived from
+     them?
+
+     > N/A
+
+04.  How do the features in your specification deal with sensitive information?
+
+     > N/A
+
+05.  Do the features in your specification introduce new state for an origin
+     that persists across browsing sessions?
+
+     > No.
+
+06.  Do the features in your specification expose information about the
+     underlying platform to origins?
+
+     > No.
+
+07.  Does this specification allow an origin to send data to the underlying
+     platform?
+
+     > No.
+
+08.  Do features in this specification enable access to device sensors?
+
+     > No.
+
+09.  Do features in this specification enable new script execution/loading
+     mechanisms?
+
+     > !!!
+
+10.  Do features in this specification allow an origin to access other devices?
+
+     > No.
+
+11.  Do features in this specification allow an origin some measure of control over
+     a user agent's native UI?
+
+     > No.
+
+12.  What temporary identifiers do the features in this specification create or
+     expose to the web?
+
+     > No.
+
+13.  How does this specification distinguish between behavior in first-party and
+     third-party contexts?
+
+     > This disables a feature.
+     > 1st party can disable for all 3rd parties.
+     > 3rd parties can disable the feature for themselves and their subframes.
+
+14.  How do the features in this specification work in the context of a browser’s
+     Private Browsing or Incognito mode?
+
+     > No difference.
+
+15.  Does this specification have both "Security Considerations" and "Privacy
+     Considerations" sections?
+
+     > It does now!
+
+16.  Do features in your specification enable origins to downgrade default
+     security protections?
+
+     > No.
+
+17.  How does your feature handle non-"fully active" documents?
+
+     > N/A
+
+18.  What should this questionnaire have asked?
+
+     > Does this feature allow new cross-origin control points.
