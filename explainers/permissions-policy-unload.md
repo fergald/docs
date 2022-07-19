@@ -1,4 +1,4 @@
-## Permissions-Policy to disable unload handler
+# Permissions-Policy to disable unload handler
 
 ## What is this?
 
@@ -330,7 +330,7 @@ before sites start using this.
 09.  Do features in this specification enable new script execution/loading
      mechanisms?
 
-     > !!!
+     > No.
 
 10.  Do features in this specification allow an origin to access other devices?
 
