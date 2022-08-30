@@ -11,18 +11,35 @@ while allowing exceptions.
 
 ## Motivation
 
+### Unload handlers are incompatible with BFCache
+
 Unload handlers have been [unreliable](https://developers.google.com/web/updates/2018/07/page-lifecycle-api#the-unload-event) for a long time.
 Unload handlers are not guaranteed to be fired
 on all cases where a document gets destroyed,
 especially on mobile platforms
-where tabs are more likely to get killed in the background.
+where tabs are more likely to get killed in the background
+or with the app being swiped away.
 
-Additionally, unload handlers have a problematic relationship with [BFCache](https://web.dev/bfcache/).
-When entering BFCache a page receives a pagehide event
-but not an unload event.
+Additionally, unload handlers are incompatible with [BFCache](https://web.dev/bfcache/).
+There is no correct time to fire the unload handler
+for a page that enters BFCache.
+When entering BFCache a page receives a pagehide event.
+We cannot fire the unload event at this point
+because the page may be restored later
+(and unload handlers are written with the assumption
+that the page is gone forever).
 If the user never returns to the page,
-the page will be destroyed without ever receiving an unload event.
-For a page with unload event handlers,
+the page will be destroyed.
+We cannot run the unload handler
+at the time of destruction
+because in the user's mind,
+the page is long gone
+and having it suddenly start to run JS
+and maybe make network connections
+while remaining copletely invisible
+would be quite unexpected.
+
+So, for a page with unload event handlers,
 we must choose whether to allow BFCacheing
 or whether to make the unload event reliable.
 
@@ -45,12 +62,34 @@ which makes migrating away from unload easier for some common use cases.
 If there are use cases that still require unload handlers
 please let us know.
 
+### Unload Handlers are Preventing BFCache Use.
+
+From Chromium telemetry,
+for 16% of history navigations,
+the only reason blocking from entering BFCache
+is that they have an unload handler in some frame.
+There are lots more pages blocked by unload+some other reasons,
+so other browsers (that do not block on those reasons)
+could be seeing far higher than 16% that are only blocked by unload.
+
+### Sites are Trying to Keep Unload Away
+
 For sites that have removed some or all of their unload handlers,
 we would like them to have way to ensure
 that no new handlers are introduced in the future.
+For large, multi-team sites,
+it is impossible to prevent unload handlers
+from being added by teams
+who are unaware of the performance problems it cases.
+We have seen this several times recently
+on Google properties.
 In addition to that,
 sometimes getting rid of unload handlers from the page is not easy
-e.g. in the case when a third party code library uses unload handlers silently.
+e.g. in the case when a third party code library
+uses unload handlers silently.
+
+### Expected impact
+
 This proposal gives the site
 a way stop firing unload handlers
 even if they are added by code outside of their control.
@@ -59,7 +98,7 @@ If a page uses this new Permissions-Policy,
 the page will be:
 
 *   More likely to be eligible with BFCache
-*   Protected from accidentally introducing unload handlers
+*   Protected from accidentally introducing new unload handlers
 *   More predictable as the unload handler will never run,
     instead of maybe running on Desktop but not on Chrome Android/Safari/etc.
 
