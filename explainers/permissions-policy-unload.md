@@ -323,6 +323,37 @@ We will make an effort to make extension authors aware of this new feature
 so that they can proactively migrate away from unload
 before sites start using this.
 
+### Why unload but not beforeunload?
+
+While `beforeunload` event handlers are abused,
+they also have legitimate uses,
+e.g. save-before-exit prompts.
+Also, any subframe abusing them
+has a very visible and direct impact on the UX of the site.
+This makes the abuse self-limiting.
+Sites will not embed third party frames
+that openly hurt their user experience.
+We know of no examples
+where an otherwise useful third party subframe
+adds an abusive `beforeunload` handler.
+This means that there is no motivation
+to give the ability to prevent the use of `beforenuload` handlers.
+
+The negative impact of `unload` handlers,
+blocking BFCache and hurting pageload performance,
+is much less visible.
+This means there is little or no pressure on third parties
+to remove `unload` handlers from their code.
+
+`beforeunload` blocks BFCache on Mozilla
+but we believe is an implementation detail.
+There is no fundamental conflict between the firing the `beforeunload` event
+and allowing the page into BFCache.
+On the other hand,
+unload handlers block BFCache on Mozilla and Chrome desktop
+because they have a fundamental incompatibilty,
+as described [above](#).
+
 # [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
 
 01.  What information might this feature expose to Web sites or other parties,
