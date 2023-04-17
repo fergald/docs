@@ -158,7 +158,9 @@ so it won't be permitted.
 Permissions-Policy-Report-Only: unload=()
 ```
 
-## Considered alternatives - Document-Policy
+## Considered alternatives
+
+### Document-Policy
 
 [Document-Policy](https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md) is another possible way to disable unload handlers.
 For example, site authors could use the following HTTP response header.
@@ -177,7 +179,7 @@ This would be useful on dev and staging deployments
 to detect subframes that do not comply with the policy
 but deploying it in production would be risky.
 
-## Considered alternatives - Disabling from JS
+### Disabling from JS
 
 It's possible to disable the current document's unload handlers via JavaScript
 (e.g. with the following script),
@@ -207,7 +209,7 @@ if (!window.original_addEventListener) {
 }
 ```
 
-## Considered alternatives - reloading iframes
+### Reloading iframes
 
 We’ve considered unloading iframes on navigating away
 if the iframes are cross-origin
