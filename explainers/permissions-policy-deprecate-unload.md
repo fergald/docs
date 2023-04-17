@@ -2,36 +2,32 @@
 
 ## What is this?
 
-This is a proposal to disable running unload handlers by default
-and to add for a new [Permissions-Policy](https://github.com/w3c/webappsec-permissions-policy/blob/main/permissions-policy-explainer.md) entry
+This is a proposal to disable running `unload` handlers by default
+and to add a new [Permissions-Policy](https://github.com/w3c/webappsec-permissions-policy/blob/main/permissions-policy-explainer.md) entry
 that will allow them to be re-enabled
 by sites which cannot easily stop using them.
-
-Permissions-Policy is a mechanism for controlling individual page's
-access to features.
-This proposal would add a way for a page to opt out of firing unload handlers
-while allowing exceptions.
 
 ## Background
 
 ### Unload reliability
 
 According to [Nic Jansma's survey](https://nicj.net/beaconing-in-practice/#beaconing-reliability-unload),
-unload runs 95%+ of the time on desktop Chrome, Edge and Firefox
-but considerably less (57%-68%) on mobile browsers.
+`unload` handlers runs 95%+ of the time on desktop Chrome, Edge and Firefox
+but considerably less (57%-68%) on mobile browsers and Safari desktop
+which already prioritize BFCaching over running `unload` handlers.
 
-Unload is unreliable on mobile
+`unload` handlers are unreliable on mobile
 because mobile OSes kill tabs and apps in the background.
 For some time,
 developers have been [advised](https://developers.google.com/web/updates/2018/07/page-lifecycle-api#the-unload-event)
-not to use unload handlers.
+not to use `unload` handlers.
 
 ### Unload as specced
 
-Unload is [currently specced](https://whatpr.org/html/4288/browsing-the-web.html#unloading-documents) to run
+`unload` handlers are [currently specced](https://whatpr.org/html/4288/browsing-the-web.html#unloading-documents) to run
 when the document is destroyed
 *unless* "the user agent does not intend to keep document alive in a session history entry".
-This means that unload only runs if the document will not enter BFCache,
+This means that `unload` handlers only runs if the document will not enter BFCache,
 i.e. a main-frame navigation where BFCaching is not allowed or
 a subframe navigation.
 
@@ -41,8 +37,8 @@ This was specced in this [PR](https://github.com/whatwg/html/pull/5889).
 
 WebKit's implementation matches the spec.
 Mozilla's and Chrome's match the spec on mobile
-but on desktop they both give priority to running unload
-and block BFCache if an unload handler is present.
+but on desktop they both give priority to running `unload` handlers
+and block BFCache if an `unload` handler is present.
 In Chrome's case we felt that since it was already unreliable on mobile
 that making it moreso was not a problem.
 However with 95% reliability on desktop,
@@ -50,14 +46,14 @@ reducing that significantly would be a problem.
 
 ### Whether unload handlers will run is not predictable
 
-Whether unload handlers run is deterministic
+Whether `unload` handlers run is deterministic
 but usually,
 neither main frames nor subframes
 have enough information
 to know if they will run.
 
 As specced the only way to reliably predict
-whether an unload handler will run
+whether an `unload` handler will run
 when the main frame navigates
 is to carefully force it run or to not run.
 I.e.
@@ -68,15 +64,15 @@ I.e.
   This prevents BFCacheing, hurting performance.
 
 Without doing one or the other,
-whether the unload handler runs or not
+whether the `unload` handler runs or not
 is dependent on state that is hard or impossible to see.
 
 ### Unload is biased
 
-If you collect data via unload handlers,
+If you collect data via `unload` handlers,
 some fraction of this data will be missing
 due to handlers that did not run.
-When unload handlers running depends on BFCache eligibility,
+When `unload` handlers running depends on BFCache eligibility,
 and that in turns depends the activity of 3rd party subframes,
 compensating for this missing data is hard or impossible.
 It may be that whether data is collected
@@ -86,16 +82,16 @@ or which ad network's ads were shown.
 ### Previous proposal
 
 Chrome's [original proposed][previous] to allow sites
-to opt-in to disabling unload handlers.
+to opt-in to disabling `unload` handlers.
 This was an attempt to move the ecosystem
-away from unload handlers,
+away from `unload` handlers,
 making it easier to align with the spec eventually.
 It found no support with other vendors.
 
 ## Motivation
 
 If we were starting from scratch,
-there would not be an unload handler.
+there would not be an `unload` handler.
 Keeping all other things constant,
 the web platform would be better without it
 If we're going to make a disruptive change,
@@ -106,7 +102,7 @@ let's aim for the best end-point.
 As they are currently specced,
 the only way,
 for a complex site,
-to make unload handlers reliable, predictable and unbiased
+to make `unload` handlers reliable, predictable and unbiased
 is to force them to run by blocking BFCache.
 
 ### Unload handlers are rarely the correct choice
@@ -118,7 +114,7 @@ and the better alternatives to use.
 ### Aligning with the current spec is disruptive
 
 [As pointed out](https://github.com/whatwg/html/pull/5889#pullrequestreview-505683024) when the spec was being updated
-skipping unload handlers
+skipping `unload` handlers
 is a breaking change.
 On platforms where unload is 95% reliable
 it requires a careful rollout.
@@ -134,19 +130,19 @@ and still available for those who opt-in.
 
 ### Sites are Trying to Keep Unload Away
 
-Some sites have removed some or all of their unload handlers,
+Some sites have removed some or all of their `unload` handlers,
 but with large complex sites
 even without 3rd-party scripts and iframes
 it is hard to ensure
-that nobody introduces an unload handler.
+that nobody introduces an `unload` handler.
 
-By disabling unload handlers by default,
+By disabling `unload` handlers by default,
 this will prevent new instances from introduces inadvertently.
 
 ## Proposed Solution
 
 *   Add `unload` as a [policy-controlled feature](https://www.w3.org/TR/permissions-policy-1/#features).
-*   Use [default allowlist](https://www.w3.org/TR/permissions-policy-1/#default-allowlists) `()` for the unload feature
+*   Use [default allowlist](https://www.w3.org/TR/permissions-policy-1/#default-allowlists) `()` for the `unload` feature
 
 ### Logistics of deprecation
 
@@ -172,7 +168,7 @@ Selecting the N% of navigations needs some care.
 ## Considered alternatives
 
 The [original proposal][previous] had a default allowlist of `*`.
-It required sites to opt in to disabling unload handlers.
+It required sites to opt in to disabling `unload` handlers.
 There were concerns that this gave sites a way
 to control the execution of code in iframes.
 
@@ -199,7 +195,7 @@ None.
      necessary to enable their intended uses?
 
      > Yes. No information is directly exposed.
-     > Some information about whether a subframe has an unload event handler
+     > Some information about whether a subframe has an `unload` event handler
      > might be deducible.
 
 03.  How do the features in your specification deal with personal information,
