@@ -12,7 +12,7 @@ by sites which cannot easily stop using them.
 ### Unload reliability
 
 According to [Nic Jansma's survey](https://nicj.net/beaconing-in-practice/#beaconing-reliability-unload),
-`unload` handlers runs 95%+ of the time on desktop Chrome, Edge and Firefox
+`unload` handlers run 95%+ of the time on desktop Chrome, Edge and Firefox
 but considerably less (57%-68%) on mobile browsers and Safari desktop
 which already prioritize BFCaching over running `unload` handlers.
 
@@ -74,10 +74,13 @@ some fraction of this data will be missing
 due to handlers that did not run.
 When `unload` handlers running depends on BFCache eligibility,
 and that in turns depends the activity of 3rd party subframes,
-compensating for this missing data is hard or impossible.
-It may be that whether data is collected
+there could be significant bias
+in which data is missing.
+It may be that whether the data is collected
 depends what actions the user took
 or which ad network's ads were shown.
+This bias means that compensating for this missing data
+may be hard or impossible.
 
 ### Previous proposal
 
@@ -113,26 +116,26 @@ and the better alternatives to use.
 
 ### Aligning with the current spec is disruptive
 
-[As pointed out](https://github.com/whatwg/html/pull/5889#pullrequestreview-505683024) when the spec was being updated
+[As pointed out](https://github.com/whatwg/html/pull/5889#pullrequestreview-505683024) when the spec was being updated,
 skipping `unload` handlers
 is a breaking change.
-On platforms where unload is 95% reliable
+On platforms where unload is 95% reliable,
 it requires a careful rollout.
 Making a breaking change
 to get to an end-point where
 unload is even more of a foot-gun
 is not ideal.
 
-If Chrome and Mozilla are to undertake a disruptive change
+If Chrome and Mozilla are to undertake a disruptive change,
 this is an opportunity to reach a better end-point,
-where unload is gone for more
-and still available for those who opt-in.
+where unload is gone by default
+but still available for those who opt-in.
 
 ### Sites are Trying to Keep Unload Away
 
 Some sites have removed some or all of their `unload` handlers,
-but with large complex sites
-even without 3rd-party scripts and iframes
+but with large complex sites,
+even without 3rd-party scripts and iframes,
 it is hard to ensure
 that nobody introduces an `unload` handler.
 
@@ -146,7 +149,12 @@ this will prevent new instances from introduces inadvertently.
 
 ### Logistics of deprecation
 
-This needs to be rolled out gradually and with care.
+We do no think we can suddenly flip this switch.
+We would like to roll it out gradually
+so that sites who miss the announcement
+still have time to react
+before being heavily disrupted.
+
 A straw-person proposal for the rollout would be
 
 - Enable permissions-policy for `unload`
@@ -160,10 +168,11 @@ Selecting the N% of navigations needs some care.
   would inflict full breakage on a fraction of users.
 - Rolling out by site/URL would suddenly inflict full breakage
   on a fraction of sites.
-- Rolling out at random would leads problems
+- Rolling out at random would lead to problems
   that are hard to detect and reproduce.
 - Rolling out by some combined hash of user
-  and site/URL would avoid all of the problems above
+  and site/URL is more complex
+  but would avoid all of the problems above.
 
 ## Considered alternatives
 
@@ -175,14 +184,21 @@ to control the execution of code in iframes.
 Disabling by default avoids this problem.
 
 Several other alternatives are discussed
-in the [original proposal][previous#considered-alternatives].
+in the [original proposal][previous-considered-alternatives].
 
 ## Privacy Considerations
 
 None.
 
 ## Security Considerations
-## Frequently Asked Questions
+
+There would be a period where
+the default allowlist for the policy would be `*`.
+This was discussed in detail in the [previous proposal].
+
+The currernt proposal makes this a tempoarary state.
+
+No other concerns are known.
 
 # [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
 
@@ -277,4 +293,6 @@ None.
      > ?
 
 
-[previous]: permissions-policy-deprecate.md
+[previous]: permissions-policy-unload.md
+[previous-considered-alternatives]: permissions-policy-unload.md#considered-alternatives
+[previous-security]: permissions-policy-unload.md##security-considerations
