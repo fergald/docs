@@ -147,7 +147,24 @@ this will prevent new instances from introduces inadvertently.
 *   Add `unload` as a [policy-controlled feature](https://www.w3.org/TR/permissions-policy-1/#features).
 *   Use [default allowlist](https://www.w3.org/TR/permissions-policy-1/#default-allowlists) `()` for the `unload` feature
 
-### Logistics of deprecation
+## Concerns about non-main frame navigations
+
+As discussed [here](https://github.com/mozilla/standards-positions/issues/691#issuecomment-1484997320),
+there may be sites that rely on `unload` handlers
+when subframe navigate.
+E.g. they may signal to their parent frame that they have navigated.
+Sites like this would be broken
+by disabling `unload` handlers.
+Chrome are adding metrics
+to try quantify how often this kind of navigation occurs.
+
+If this turns out to be a significant concern,
+we could deprecate `unload` handlers *only* for main-frame navigations.
+This would be more complex,
+and less clean,
+so it not our preferred option.
+
+## Logistics of deprecation
 
 We do no think we can suddenly flip this switch.
 We would like to roll it out gradually
