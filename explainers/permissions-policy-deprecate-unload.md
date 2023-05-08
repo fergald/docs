@@ -26,7 +26,7 @@ not to use `unload` handlers.
 
 `unload` handlers are [currently specced](https://whatpr.org/html/4288/browsing-the-web.html#unloading-documents) to run
 when the document is destroyed
-*unless* "the user agent does not intend to keep document alive in a session history entry".
+*as long as* "the user agent does not intend to keep document alive in a session history entry".
 This means that `unload` handlers only runs if the document will not enter BFCache,
 i.e. a main-frame navigation where BFCaching is not allowed or
 a subframe navigation.
