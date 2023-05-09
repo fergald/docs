@@ -179,17 +179,23 @@ A straw-person proposal for the rollout would be
 - Flip the default allowlist to `()` for N% of navigations
 - Increase N to 100 over time
 
-Selecting the N% of navigations needs some care.
+We assume there will be some user-impacting breakage
+on multiple sites
+that will be fixed
+as sites become aware of it.
+So choosing the N% of page-loads needs some care.
 
-- Rolling out by user
-  would inflict full breakage on a fraction of users.
-- Rolling out by site/URL would suddenly inflict full breakage
-  on a fraction of sites.
-- Rolling out at random would lead to problems
+- Choosing at random would lead to problems
   that are hard to detect and reproduce.
-- Rolling out by some combined hash of user
-  and site/URL is more complex
-  but would avoid all of the problems above.
+- Choosing by user
+  would inflict full breakage on a fraction of users.
+- Choosing by site/URL would suddenly inflict full breakage
+  on a fraction of sites.
+- **(Proposed)** Choosing by a combined hash of user
+  and site/URL is more complex but
+  it gives consistently reproducible results
+  for each user
+  without subjecting any user to all of the breakage.
 
 ## Considered alternatives
 
