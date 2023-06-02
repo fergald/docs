@@ -145,7 +145,9 @@ this will prevent new instances from introduces inadvertently.
 ## Proposed Solution
 
 *   Add `unload` as a [policy-controlled feature](https://www.w3.org/TR/permissions-policy-1/#features).
-*   Use [default allowlist](https://www.w3.org/TR/permissions-policy-1/#default-allowlists) `()` for the `unload` feature
+*   Use default allowlist of `none` for the `unload` feature
+([issue](https://github.com/w3c/webappsec-permissions-policy/issues/513),
+(draft spec PR)[https://github.com/w3c/webappsec-permissions-policy/pull/515])
 
 ## Concerns about non-main frame navigations
 
