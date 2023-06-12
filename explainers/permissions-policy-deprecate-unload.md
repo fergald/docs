@@ -33,6 +33,35 @@ a subframe navigation.
 
 This was specced in this [PR](https://github.com/whatwg/html/pull/5889).
 
+### Unload as implemented.
+
+WebKit's implementation matches the spec.
+Mozilla's and Chrome's match the spec on mobile
+but on desktop they both give priority to running `unload` handlers
+and block BFCache if an `unload` handler is present.
+In Chrome's case we felt that since it was already unreliable on mobile
+that making it moreso was not a problem.
+However with 95% reliability on desktop,
+reducing that significantly would be a problem.
+
+### Previous proposal
+
+Chrome's [original proposed][previous] to allow sites
+to opt-in to disabling `unload` handlers.
+This was an attempt to move the ecosystem
+away from `unload` handlers,
+making it easier to align with the spec eventually.
+It found no support with other vendors.
+
+## Motivation
+
+If we were starting from scratch,
+there would not be an `unload` handler.
+Keeping all other things constant,
+the web platform would be better without it
+If we're going to make a disruptive change,
+let's aim for the best end-point.
+
 ### Unload is a footgun
 
 #### Unload is biased
@@ -88,35 +117,6 @@ I.e.
 Without doing one or the other,
 whether the `unload` handler runs or not
 is dependent on state that is hard or impossible to see.
-
-### Unload as implemented.
-
-WebKit's implementation matches the spec.
-Mozilla's and Chrome's match the spec on mobile
-but on desktop they both give priority to running `unload` handlers
-and block BFCache if an `unload` handler is present.
-In Chrome's case we felt that since it was already unreliable on mobile
-that making it moreso was not a problem.
-However with 95% reliability on desktop,
-reducing that significantly would be a problem.
-
-### Previous proposal
-
-Chrome's [original proposed][previous] to allow sites
-to opt-in to disabling `unload` handlers.
-This was an attempt to move the ecosystem
-away from `unload` handlers,
-making it easier to align with the spec eventually.
-It found no support with other vendors.
-
-## Motivation
-
-If we were starting from scratch,
-there would not be an `unload` handler.
-Keeping all other things constant,
-the web platform would be better without it
-If we're going to make a disruptive change,
-let's aim for the best end-point.
 
 ### Reliable unload handlers are incompatible with BFCache
 
