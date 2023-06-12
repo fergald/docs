@@ -33,6 +33,39 @@ a subframe navigation.
 
 This was specced in this [PR](https://github.com/whatwg/html/pull/5889).
 
+### Unload is a footgun
+
+#### Unload is biased
+
+Safari is the only desktop browser to match the spec
+and runs unload about 58% of the time.
+Presumably others would see similar rates.
+
+If a site collects data via `unload` handlers,
+some fraction of this data will be missing
+due to handlers that did not run.
+When `unload` handlers running depends on BFCache eligibility,
+and that in turns depends the activity of 3rd party subframes,
+there could be significant bias
+in which data is missing.
+It may be that whether the data is collected
+depends what actions the user took
+or which ad network's ads were shown.
+
+The rate of running unload
+may also vary widely from page to page
+within the same site
+due to features used by the page.
+
+This bias means that compensating for this missing data
+may be hard or impossible.
+
+#### Unload handlers are rarely the correct choice
+
+This [doc](https://developer.chrome.com/blog/page-lifecycle-api/#the-unload-event) on the page lifecycle
+covers the problems with unload
+and the better alternatives to use.
+
 #### Whether unload handlers will run is not predictable
 
 Whether `unload` handlers run is deterministic
@@ -55,21 +88,6 @@ I.e.
 Without doing one or the other,
 whether the `unload` handler runs or not
 is dependent on state that is hard or impossible to see.
-
-#### Unload is biased
-
-If you collect data via `unload` handlers,
-some fraction of this data will be missing
-due to handlers that did not run.
-When `unload` handlers running depends on BFCache eligibility,
-and that in turns depends the activity of 3rd party subframes,
-there could be significant bias
-in which data is missing.
-It may be that whether the data is collected
-depends what actions the user took
-or which ad network's ads were shown.
-This bias means that compensating for this missing data
-may be hard or impossible.
 
 ### Unload as implemented.
 
@@ -107,12 +125,6 @@ the only way,
 for a complex site,
 to make `unload` handlers reliable, predictable and unbiased
 is to force them to run by blocking BFCache.
-
-### Unload handlers are rarely the correct choice
-
-This [doc](https://developer.chrome.com/blog/page-lifecycle-api/#the-unload-event) on the page lifecycle
-covers the problems with unload
-and the better alternatives to use.
 
 ### Aligning with the current spec is disruptive
 
