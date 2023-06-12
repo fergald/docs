@@ -157,14 +157,54 @@ when subframe navigate.
 E.g. they may signal to their parent frame that they have navigated.
 Sites like this would be broken
 by disabling `unload` handlers.
-Chrome are adding metrics
-to try quantify how often this kind of navigation occurs.
 
-If this turns out to be a significant concern,
-we could deprecate `unload` handlers *only* for main-frame navigations.
-This would be more complex,
-and less clean,
-so it not our preferred option.
+Chrome's telemetry tells us that on Chrome 114,
+among subframe navigations,
+the following fractions involve an `unload` event handler:
+
+```
+Android: 9%
+Lacros: 10%
+Linux: 15%
+MacOS: 27%
+Windows: 24%
+```
+
+The denominator is
+
+- subframe navigations
+- excluding navigation away from initial empty document/about:blank
+
+Numerator is as above AND
+
+- an unload handler would fire for this navigation (in any frame)
+
+Restricting to unload handlers
+that are same-origin as the navigating frame
+reduces the numbers by about 1-2 percentage points.
+
+Being conservative
+and also adding navigations
+from initial empty document/about:blank that would fire unload
+to the numerator
+(leaving the denominator unchanged
+since the vast majority of those navigations are not "real" navigations,
+they typically happen immediately after the frame is created)
+adds about 1 percentage point.
+
+It is unknown what fraction of these `unload` handlers
+are important to the state/logic of the page within the subframe.
+The numbers are large enough
+that there could be a significant number of them.
+
+Since `pagehide` serves as a perfectly good subsititute
+for `unload` in this case
+and since the `Permissions-Policy` header
+will be available,
+we propose to include subframe navigations.
+If this turns out to be a significant problem,
+we could change to only impacting
+`unload` handlers for main-frame navigations.
 
 ## Logistics of deprecation
 
