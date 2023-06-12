@@ -33,18 +33,7 @@ a subframe navigation.
 
 This was specced in this [PR](https://github.com/whatwg/html/pull/5889).
 
-### Unload as implemented.
-
-WebKit's implementation matches the spec.
-Mozilla's and Chrome's match the spec on mobile
-but on desktop they both give priority to running `unload` handlers
-and block BFCache if an `unload` handler is present.
-In Chrome's case we felt that since it was already unreliable on mobile
-that making it moreso was not a problem.
-However with 95% reliability on desktop,
-reducing that significantly would be a problem.
-
-### Whether unload handlers will run is not predictable
+#### Whether unload handlers will run is not predictable
 
 Whether `unload` handlers run is deterministic
 but usually,
@@ -67,7 +56,7 @@ Without doing one or the other,
 whether the `unload` handler runs or not
 is dependent on state that is hard or impossible to see.
 
-### Unload is biased
+#### Unload is biased
 
 If you collect data via `unload` handlers,
 some fraction of this data will be missing
@@ -81,6 +70,17 @@ depends what actions the user took
 or which ad network's ads were shown.
 This bias means that compensating for this missing data
 may be hard or impossible.
+
+### Unload as implemented.
+
+WebKit's implementation matches the spec.
+Mozilla's and Chrome's match the spec on mobile
+but on desktop they both give priority to running `unload` handlers
+and block BFCache if an `unload` handler is present.
+In Chrome's case we felt that since it was already unreliable on mobile
+that making it moreso was not a problem.
+However with 95% reliability on desktop,
+reducing that significantly would be a problem.
 
 ### Previous proposal
 
