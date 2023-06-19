@@ -253,6 +253,8 @@ So choosing the N% of page-loads needs some care.
 
 ## Considered alternatives
 
+### Opt-out via Permissions-Policy
+
 The [original proposal][previous] had a default allowlist of `*`.
 It required sites to opt in to disabling `unload` handlers.
 There were concerns that this gave sites a way
@@ -262,6 +264,40 @@ Disabling by default avoids this problem.
 
 Several other alternatives are discussed
 in the [original proposal][previous-considered-alternatives].
+
+### Reverse Orgin Trial
+
+A reverse origin trial (ROT) would allow us
+to disable `unload` handlers
+for the majority of pageloads
+while still allowing sites
+to re-enable if needed.
+
+Unload appears in over 30% of all
+potentially BFCacheable navigations.
+So we can assume that its prevalence
+across all pageloads is something close to that.
+We have also seen enterprise software
+that relies on `unload` handlers to function correctly.
+So we have no clear idea
+of when we could safely remove `unload` handlers
+from the Web Platform.
+
+Since this is a disruptive intervention,
+we do not want to suddenly apply to 100% of pageloads.
+This would mean our ROT would have to ramp up over time.
+This is an unusual (unique?) way to run an ROT.
+ROTs are typically used when usage of the feature
+is already very small.
+
+With no end-date,
+an ROT for this deprecation,
+even if we were were to ramp up gradually,
+is not a good option.
+If we manage to massively drive down usage
+of `unload` handlers across the web
+then we could consider an ROT
+as the final step to removal of the feature.
 
 ## Privacy Considerations
 
