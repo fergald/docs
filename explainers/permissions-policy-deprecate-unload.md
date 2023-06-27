@@ -62,7 +62,7 @@ the web platform would be better without it
 If we're going to make a disruptive change,
 let's aim for the best end-point.
 
-### Unload is a footgun
+### Unload as specced is a footgun
 
 #### Unload is biased
 
