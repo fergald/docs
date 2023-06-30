@@ -1,8 +1,11 @@
-# Superceeded: Permissions-Policy to disable unload handler
+# Permissions-Policy to disable unload handler
 
-<div style="color:red">
-# This has been superceeded by a [proposal to deprecate unload](permissions-policy-deprecate-unload.md)
-</div>
+## Status
+
+This has been superceeded by a [proposal to deprecate unload](permissions-policy-deprecate-unload.md).
+However it is step 1 of that proposal
+and it's worth reading that
+to understand the whole picture.
 
 ## What is this?
 
