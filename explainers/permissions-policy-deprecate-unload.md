@@ -349,6 +349,31 @@ You should see
 [Violation] Permissions policy violation: unload is not allowed in this document.
 ```
 
+## Reenabling unload for a frame
+
+If the frame in question is a top-level frame
+then all that's needed is the header. E.g.
+
+```
+Permissions-Policy: unload=self
+```
+
+If the frame in question is a subframe
+then the header must be present on that frame
+and all ancestor frames and
+all containing `iframe` elements must set `allow="unload"`.
+If the frame is a cross-origin subframe,
+e.g. if a.com has a b.com subframe
+then the header on top-level frame must allow unload for both domains, e.g.
+
+```
+Permissions-Policy: unload=(self,"https://b.com")
+```
+
+and the header on b.com must allow it for itself.
+
+[Here](https://dyn.fergaldaly.com/~fergal/html/pp-unload/enabled/) is a same-origin example
+
 # [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
 
 01.  What information might this feature expose to Web sites or other parties,
