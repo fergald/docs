@@ -313,6 +313,42 @@ The currernt proposal makes this a tempoarary state.
 
 No other concerns are known.
 
+# Testing with Chrome
+
+## Controlling unload with Permissions Policy
+
+As of [106.0.5229.0](https://chromiumdash.appspot.com/commit/5c436e20b6d923241eadd2afe8b846ed32d46eea),
+a flag is available to control whether Permissions-Policy controls unload.
+To enable this,
+you can start Chrome with
+
+```
+--enable-features=PermissionsPolicyUnload
+```
+
+## Disabling unload by default
+
+As of [117.0.5924.2](https://chromiumdash.appspot.com/commit/2cf526285beacdfebe2251a20ad5550b3487a277),
+flags are available to control the deprecation.
+To force the deprecation,
+you can start Chrome with
+
+```
+--enable-features=PermissionsPolicyUnload,DeprecateUnload --disable-features=DeprecateUnloadByUserAndOrigin
+```
+
+After that you can open a devtools window and try
+
+```
+addEventListener("unload", () => {})
+```
+
+You should see
+
+```
+[Violation] Permissions policy violation: unload is not allowed in this document.
+```
+
 # [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
 
 01.  What information might this feature expose to Web sites or other parties,
