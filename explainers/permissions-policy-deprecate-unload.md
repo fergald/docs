@@ -349,6 +349,25 @@ You should see
 [Violation] Permissions policy violation: unload is not allowed in this document.
 ```
 
+## Using ReportingAPI to find unloads
+
+You can use the [ReportintAPI](https://www.w3.org/TR/reporting-1/)
+to detect uses of unload in your pages
+without preventing the usage. E.g.
+
+```
+Permissions-Policy-Report-Only: unload=()
+
+```
+
+You must also supply the correct ReportingAPI headers e.g.
+
+```
+Report-To: {"group":"default","max_age":1800,"endpoints":[{"url":"https://exmaple.com/report"}],"include_subdomains":true}
+```
+
+for the reports to be delivered.
+
 ## Reenabling unload for a frame
 
 If the frame in question is a top-level frame
