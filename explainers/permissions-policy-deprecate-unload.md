@@ -40,7 +40,7 @@ Mozilla's and Chrome's match the spec on mobile
 but on desktop they both give priority to running `unload` handlers
 and block BFCache if an `unload` handler is present.
 In Chrome's case we felt that since it was already unreliable on mobile
-that making it moreso was not a problem.
+that making it more so was not a problem.
 However with 95% reliability on desktop,
 reducing that significantly would be a problem.
 
@@ -351,7 +351,7 @@ You should see
 
 ## Using ReportingAPI to find unloads
 
-You can use the [ReportintAPI](https://www.w3.org/TR/reporting-1/)
+You can use the [ReportingAPI](https://www.w3.org/TR/reporting-1/)
 to detect uses of unload in your pages
 without preventing the usage. E.g.
 
