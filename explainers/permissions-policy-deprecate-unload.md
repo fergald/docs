@@ -349,9 +349,9 @@ You should see
 [Violation] Permissions policy violation: unload is not allowed in this document.
 ```
 
-## Using ReportingAPI to find unloads
+## Using Reporting API to find unloads
 
-You can use the [ReportingAPI](https://www.w3.org/TR/reporting-1/)
+You can use the [Reporting API](https://www.w3.org/TR/reporting-1/)
 to detect uses of unload in your pages
 without preventing the usage. E.g.
 
@@ -360,7 +360,7 @@ Permissions-Policy-Report-Only: unload=()
 
 ```
 
-You must also supply the correct ReportingAPI headers e.g.
+You must also supply the correct Reporting API headers e.g.
 
 ```
 Report-To: {"group":"default","max_age":1800,"endpoints":[{"url":"https://exmaple.com/report"}],"include_subdomains":true}
