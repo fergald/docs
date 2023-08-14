@@ -351,7 +351,7 @@ You should see
 
 ## Using ReportingAPI to find unloads
 
-You can use the [ReportintAPI](https://www.w3.org/TR/reporting-1/)
+You can use the [ReportingAPI](https://www.w3.org/TR/reporting-1/)
 to detect uses of unload in your pages
 without preventing the usage. E.g.
 
