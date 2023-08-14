@@ -393,6 +393,67 @@ and the header on b.com must allow it for itself.
 
 [Here](https://dyn.fergaldaly.com/~fergal/html/pp-unload/enabled/) is a same-origin example
 
+## Workarounds
+
+Most uses of `unload` can be replaced with `pagehide`
+see [here](https://developer.chrome.com/blog/page-lifecycle-api/#the-unload-event) for advice.
+
+There are some usages `unload` that really are related to document destruction
+and cannot be replace by `pagehide` or other events.
+
+### MessageChannel
+
+The [MessageChannel API](https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel) provides a way
+to get a pair of `MessagePorts` which can be used
+to communicate directly between cross-origin documents.
+Let's call them documentA/portA and documentB/portB.
+We know that some users of this rely on the `unload` event
+to send a notification from documentB via portB
+when documentB is being destroyed.
+This allows documentA
+to release any resources related to this communication.
+This is somewhat unreliable.
+If the documentB crashes,
+unload will not run
+and documentA will never free the resources.
+
+- If documentB is not a top-level document
+(i.e. documentB is a subframe of some other frame)
+then the `pagehide` event can be used
+as an alternative to `unload`.
+They both fire in exactly the same circumstances.
+- If documentB is or may be a top-level document
+then it may enter BFCache,
+in which case it may later be destroyed
+without any further events firing.
+`pagehide` can be used instead of `unload`
+depending on the `pagehide` event's `persisted` property:
+  - If `persisted` is false,
+  the document is being destroyed and not entering BFCache.
+  This is equivalent to an `unload` event.
+  - If `persisted` is true then the page may enter BFCache
+  (it is still possible for the document to be detroyed
+  even though `persisted` is true).
+  DocumentB may want to inform documentA that it is entering BFCache
+  (and inform that it was restored on the `pageshow` event).
+
+Finally to reliably free resources,
+documentA can hold portA in a `WeakRef`.
+When portB is closed or documentB is destroyed
+(e.g. enters BFCache but reaches its time-to-live in the cache),
+portA will also close.
+At that point,
+it becomes eligible for garbage collection.
+When garbage collections occurs,
+the `WeakRef` will return `null``.
+DocumentA can occasionally scan the collection of `WeakRefs`
+to find ports which have been closed.
+
+This could be made considerably simpler
+with the addition of an `onclose`
+or equivalant signal on `MessagePort`.
+This is discussed [is this issue](https://github.com/whatwg/html/issues/1766).
+
 # [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
 
 01.  What information might this feature expose to Web sites or other parties,
