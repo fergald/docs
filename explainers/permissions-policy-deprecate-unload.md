@@ -62,7 +62,7 @@ the web platform would be better without it
 If we're going to make a disruptive change,
 let's aim for the best end-point.
 
-### Unload as specced is a footgun
+### Unload as specced is a foot-gun
 
 #### Unload is biased
 
@@ -209,7 +209,7 @@ are important to the state/logic of the page within the subframe.
 The numbers are large enough
 that there could be a significant number of them.
 
-Since `pagehide` serves as a perfectly good subsititute
+Since `pagehide` serves as a perfectly good substitute
 for `unload` in this case
 and since the `Permissions-Policy` header
 will be available,
@@ -269,7 +269,7 @@ in the [original proposal][previous-considered-alternatives].
 
 A reverse origin trial (ROT) would allow us
 to disable `unload` handlers
-for the majority of pageloads
+for the majority of page-loads
 while still allowing sites
 to re-enable if needed.
 
@@ -284,7 +284,7 @@ of when we could safely remove `unload` handlers
 from the Web Platform.
 
 Since this is a disruptive intervention,
-we do not want to suddenly apply to 100% of pageloads.
+we do not want to suddenly apply to 100% of page-loads.
 This would mean our ROT would have to ramp up over time.
 This is an unusual (unique?) way to run an ROT.
 ROTs are typically used when usage of the feature
@@ -309,7 +309,7 @@ There would be a period where
 the default allowlist for the policy would be `*`.
 This was discussed in detail in the [previous proposal].
 
-The currernt proposal makes this a tempoarary state.
+The current proposal makes this a temporary state.
 
 No other concerns are known.
 
@@ -432,7 +432,7 @@ depending on the `pagehide` event's `persisted` property:
   the document is being destroyed and not entering BFCache.
   This is equivalent to an `unload` event.
   - If `persisted` is true then the page may enter BFCache
-  (it is still possible for the document to be detroyed
+  (it is still possible for the document to be destroyed
   even though `persisted` is true).
   DocumentB may want to inform documentA that it is entering BFCache
   (and inform that it was restored on the `pageshow` event).
@@ -451,7 +451,7 @@ to find ports which have been closed.
 
 This could be made considerably simpler
 with the addition of an `onclose`
-or equivalant signal on `MessagePort`.
+or equivalent signal on `MessagePort`.
 This is discussed [is this issue](https://github.com/whatwg/html/issues/1766).
 
 # [Self-Review Questionnaire: Security and Privacy](https://w3ctag.github.io/security-questionnaire/)
