@@ -337,7 +337,14 @@ you can start Chrome with
 --enable-features=PermissionsPolicyUnload,DeprecateUnload --disable-features=DeprecateUnloadByUserAndOrigin
 ```
 
-After that you can open a devtools window and try
+You should see in devtools,
+under Application -> Frames,
+that `unload` is disabled in the Permissions-Policy section.
+
+![Screenshot of devtools](devtools.png)
+
+If you are running chrome with `--enable-blink-features=FeaturePolicyReporting`,
+you can also try
 
 ```
 addEventListener("unload", () => {})
