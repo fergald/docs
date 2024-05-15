@@ -299,7 +299,8 @@ Both of these examples show that if an element author forgot to forward a part,
 then the app can’t be themed correctly.
 
 ### How ::theme works
-
+**Note that the ::theme Pseudo-element was never implemented in the spec and does not work.
+It is uncertain if this feature will be developed going further.**
 Elements can have a `theme` tag, similar to the `part` tag
 but unlike `::part`, `::theme` matches elements parts with that theme name,
 anywhere in the document. 
