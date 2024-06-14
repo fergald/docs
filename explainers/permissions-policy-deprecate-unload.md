@@ -556,4 +556,4 @@ This is discussed [is this issue](https://github.com/whatwg/html/issues/1766).
 
 [previous]: permissions-policy-unload.md
 [previous-considered-alternatives]: permissions-policy-unload.md#considered-alternatives
-[previous-security]: permissions-policy-unload.md##security-considerations
+[previous-security]: permissions-policy-unload.md#security-considerations
