@@ -53,6 +53,35 @@ away from `unload` handlers,
 making it easier to align with the spec eventually.
 It found no support with other vendors.
 
+### Frames which cannot fully use Permissions-Policy
+
+There are two classes of frames
+where only partial control over their Permissions-Policy
+is available.
+This tends to cause little or no problems currently
+but they need to be accounted for
+when introducing a policy default of disabled.
+
+#### Frames without `allow`
+
+`<embed>`, `<object>` and `<frame>` can all contain a HTML document
+but none of them have an `allow` attribute
+and so cannot end up with a policy for a feature
+that is less restrictive than the default forthat feature.
+
+#### Headerless documents
+
+Documents with a URL that is
+
+- empty
+- `about:blank`
+' `javascript:`
+- `data:`
+- a blob URL
+
+have no headers
+and so cannot set `Permissions-Policy` header.
+
 ## Motivation
 
 If we were starting from scratch,
@@ -156,10 +185,23 @@ this will prevent new instances from introduces inadvertently.
 
 ## Proposed Solution
 
-*   Add `unload` as a [policy-controlled feature](https://www.w3.org/TR/permissions-policy-1/#features).
-*   Use default allowlist of `none` for the `unload` feature
+* Add `unload` as a [policy-controlled feature](https://www.w3.org/TR/permissions-policy-1/#features).
+* Use default allowlist of `none` for the `unload` feature
 ([issue](https://github.com/w3c/webappsec-permissions-policy/issues/513),
 [draft spec PR](https://github.com/w3c/webappsec-permissions-policy/pull/515)).
+* Give special treatment to [certain types of frames](#frames-which-cannot-fully-use-permissions-policy)
+   which cannot fully use Permissions-Policy.
+   * Frames without headers that are same-origin with their parent document
+     will behave as if they had sent the same `Permissions-Policy` header
+	 as their parent for the `unload` feature.
+	 This means that their policy for `unload`
+	 is completely determined by their parent's policy
+	 and their `allow` attribute.
+   * Frames without an `allow` attribute will behave as if they had one
+     and it was set `unload=*`.
+	 This means that their policy for `unload`
+	 is completely determined by their parent's policy
+	 and their `Permissions-Policy` header.
 
 ## Concerns about non-main frame navigations
 
