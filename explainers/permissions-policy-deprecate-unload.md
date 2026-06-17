@@ -435,7 +435,7 @@ e.g. if a.com has a b.com subframe
 then the header on top-level frame must allow unload for both domains, e.g.
 
 ```
-Permissions-Policy: unload=(self,"https://b.com")
+Permissions-Policy: unload=(self "https://b.com")
 ```
 
 and the header on b.com must allow it for itself.
