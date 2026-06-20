@@ -25,7 +25,7 @@ Reasons to expose this API directly
     rather than making people emulate it with via higher level APIs
 *   Emulating this via Promise causes exceptions thrown in the callback
     to be converted into rejected promises.
-*   Emulating via Promise causes unnecessary objects to be created and detroyed.
+*   Emulating via Promise causes unnecessary objects to be created and destroyed.
     Other methods of emulating this also cause wasted effort.
 *   The other semantically distinct async callback queue APIs are available directly,
     microtask not being available directly is an anomaly
